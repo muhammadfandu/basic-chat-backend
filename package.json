@@ -1,0 +1,45 @@
+{
+  "name": "socketio-node",
+  "version": "0.0.1",
+  "description": "my first socket.io app",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
+    "concurrently": "^6.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.5",
+    "socket.io": "^4.1.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.16.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "faker": "^4.1.0",
+    "nodemon": "^2.0.6",
+    "pre-commit": "^1.2.2",
+    "prettier": "^1.18.2",
+    "sequelize-cli": "^6.2.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run socket\" \"npm run server\"",
+    "socket": "nodemon index.js",
+    "server": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./bin/www",
+    "migrate": "sequelize db:migrate",
+    "lint:eslint": "eslint . --ext js --ignore-path .gitignore",
+    "lint:eslint:fix": "eslint --fix . --ext js --ignore-path .gitignore",
+    "lint:prettier": "prettier \"./**/*.{js,yaml}\" -l --ignore-path .gitignore",
+    "lint:prettier:fix": "prettier \"./**/*.{js,yaml}\" --write --ignore-path .gitignore",
+    "lint": "yarn lint:eslint && yarn lint:prettier",
+    "lint:fix": "yarn lint:eslint:fix && yarn lint:prettier:fix"
+  },
+  "author": "",
+  "license": "ISC"
+}
