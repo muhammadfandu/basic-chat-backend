@@ -17,10 +17,11 @@ exports.create = (req, res) => {
     from: req.body.from,
     to: req.body.to,
     content: req.body.content,
+    time: req.body.time,
   };
 
   // Save Message in the database
-  Message.create(Message)
+  Message.create(message)
     .then((data) => {
       res.send(data);
     })

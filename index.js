@@ -1,3 +1,6 @@
+const db = require('./app/models');
+const Message = db.messages;
+
 const app = require('express')();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, {
@@ -27,35 +30,18 @@ io.use((socket, next) => {
       username: socket.username,
     });
   }
-
   next();
 });
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
-
-  socket.emit('users', users);
-
-  // notify existing users
-  socket.broadcast.emit('user connected', {
-    userID: socket.id,
-    username: socket.username,
-  });
-
-  console.log(users);
-
   socket.onAny((event, ...args) => {
-    console.log('an event happened!!!');
     console.log(event, args);
   });
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-
-  socket.on('my message', (msg) => {
-    console.log('message: ' + msg);
-    io.emit('my broadcast', `server: ${msg}`);
+  socket.emit('users', users);
+  socket.broadcast.emit('user connected', {
+    userID: socket.id,
+    username: socket.username,
   });
 
   socket.on('private message', ({ content, from, to }) => {
@@ -65,7 +51,22 @@ io.on('connection', (socket) => {
       to: to,
     });
 
-    console.log('sending ' + content + ' from ' + from + ' to ' + to);
+    let payload = {
+      to: to,
+      from: from,
+      content: content,
+      time_send: '',
+    };
+
+    Message.create(payload)
+      .then((data) => {})
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
   });
 });
 
